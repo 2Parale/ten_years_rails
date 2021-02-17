@@ -117,7 +117,9 @@ class DeprecationTracker
 
   def save
     new_shitlist = create_temp_shitlist
-    FileUtils.cp(new_shitlist.path, shitlist_path)
+    new_shitlist.rewind
+
+    File.open(shitlist_path, 'w') { |f| f.write(new_shitlist.read) }
   ensure
     new_shitlist&.delete
   end
