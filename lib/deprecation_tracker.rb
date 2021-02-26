@@ -137,8 +137,14 @@ class DeprecationTracker
     normalized = read_shitlist.merge(deprecation_messages).each_with_object({}) do |(bucket, messages), hash|
       hash[bucket] = messages.sort
     end
+    binding.pry
 
-    normalized.reject {|_key, value| value.empty? }.sort_by {|key, _value| key }.to_h
+    normalized.reject! do |_key, value|
+      value.empty? || TenYearsRails::IGNORED_DEPRECATIONS_LIST.include? value
+    end
+    binding.pry
+
+    normalized.sort_by {|key, _value| key }.to_h
   end
 
   def read_shitlist
