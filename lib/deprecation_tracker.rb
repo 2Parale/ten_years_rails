@@ -133,17 +133,13 @@ class DeprecationTracker
   end
 
   # Normalize deprecation messages to reduce noise from file output and test files to be tracked with separate test runs
+  # Remove certain deprecations
   def normalized_deprecation_messages
     normalized = read_shitlist.merge(deprecation_messages).each_with_object({}) do |(bucket, messages), hash|
-      hash[bucket] = messages.sort
+      hash[bucket] = messages.reject{ |message| TenYearsRails::IGNORED_DEPRECATIONS_LIST.include?(message) }.sort
     end
-    binding.pry
 
-    normalized = normalized.reject do |_key, value|
-                   value.empty? || TenYearsRails::IGNORED_DEPRECATIONS_LIST.include?(value)
-                 end
-
-    normalized.sort_by {|key, _value| key }.to_h
+    normalized.reject {|_key, value| value.empty? }.sort_by {|key, _value| key }.to_h
   end
 
   def read_shitlist
