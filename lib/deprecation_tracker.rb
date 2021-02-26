@@ -139,10 +139,9 @@ class DeprecationTracker
     end
     binding.pry
 
-    normalized.reject! do |_key, value|
-      value.empty? || TenYearsRails::IGNORED_DEPRECATIONS_LIST.include?(value)
-    end
-    binding.pry
+    normalized = normalized.reject do |_key, value|
+                   value.empty? || TenYearsRails::IGNORED_DEPRECATIONS_LIST.include?(value)
+                 end
 
     normalized.sort_by {|key, _value| key }.to_h
   end
