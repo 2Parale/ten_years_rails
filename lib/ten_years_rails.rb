@@ -4,5 +4,8 @@ require "ten_years_rails/bundle_report"
 require "deprecation_tracker"
 
 module TenYearsRails
-  # Your code goes here...
+  IGNORED_DEPRECATIONS_LIST = [
+    'BigDecimal.new is deprecated; use BigDecimal() method instead.',
+    '{:uplevel=>1}'
+  ]
 end
