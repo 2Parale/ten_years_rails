@@ -136,7 +136,9 @@ class DeprecationTracker
   # Remove certain deprecations
   def normalized_deprecation_messages
     normalized = read_shitlist.merge(deprecation_messages).each_with_object({}) do |(bucket, messages), hash|
-      hash[bucket] = messages.reject{ |message| TenYearsRails::IGNORED_DEPRECATIONS_LIST.include?(message) }.sort
+      messages = messages.uniq
+      messages = exclude_ignored_depereactions(messages)
+      hash[bucket] = messages.sort
     end
 
     normalized.reject {|_key, value| value.empty? }.sort_by {|key, _value| key }.to_h
@@ -147,5 +149,9 @@ class DeprecationTracker
     JSON.parse(File.read(shitlist_path))
   rescue JSON::ParserError => e
     raise "#{shitlist_path} is not valid JSON: #{e.message}"
+  end
+
+  def exclude_ignored_depereactions(messages)
+    messages.reject{ |message| TenYearsRails::IGNORED_DEPRECATIONS_LIST.include?(message) }
   end
 end
