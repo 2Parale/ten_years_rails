@@ -11,7 +11,7 @@ def run_tests(deprecation_warnings, tracker_mode:, next_mode:)
     "bundle exec rspec"
   end
 
-  command = "DEPRECATION_TRACKER=#{tracker_mode} #{rspec_command} #{deprecation_warnings.keys.join(" ")}"
+  command = "DEPRECATION_TRACKER_MODE=#{tracker_mode} #{rspec_command} #{deprecation_warnings.keys.join(" ")}"
   puts command
   exec command
 end

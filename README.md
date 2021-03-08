@@ -29,11 +29,11 @@ If you're using RSpec, add this snippet to `rails_helper.rb` or `spec_helper.rb`
 ```ruby
 RSpec.configure do |config|
   # Tracker deprecation messages in each file
-  if ENV["DEPRECATION_TRACKER"]
+  if ENV["DEPRECATION_TRACKER_MODE"]
     DeprecationTracker.track_rspec(
       config,
       shitlist_path: "spec/support/deprecation_warning.shitlist.json",
-      mode: ENV["DEPRECATION_TRACKER"],
+      mode: ENV["DEPRECATION_TRACKER_MODE"],
       transform_message: -> (message) { message.gsub("#{Rails.root}/", "") }
     )
   end
@@ -46,9 +46,9 @@ Once you have that, you can start using deprecation tracking in your tests:
 
 ```bash
 # Run your tests and save the deprecations to the shitlist
-DEPRECATION_TRACKER=save rspec
+DEPRECATION_TRACKER_MODE=save rspec
 # Run your tests and raise an error when the deprecations change
-DEPRECATION_TRACKER=compare rspec
+DEPRECATION_TRACKER_MODE=compare rspec
 ```
 
 #### `deprecations` command

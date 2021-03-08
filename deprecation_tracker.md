@@ -56,8 +56,8 @@ Keeping a list of all deprecation warnings has two primary benefits:
 
 The deprecation tracker has three mode: `compare`, `save`, and off.
 
-- `DEPRECATION_TRACKER=compare rspec foo_spec.rb`: in `compare` mode, changes to the deprecation warnings output by a test file will trigger an error. 
-- `DEPRECATION_TRACKER=save rspec foo_spec.rb`: in `save` mode, changes to the deprecation warnings output by a test file will update the shitlist.
+- `DEPRECATION_TRACKER_MODE=compare rspec foo_spec.rb`: in `compare` mode, changes to the deprecation warnings output by a test file will trigger an error. 
+- `DEPRECATION_TRACKER_MODE=save rspec foo_spec.rb`: in `save` mode, changes to the deprecation warnings output by a test file will update the shitlist.
 - `rspec foo_spec.rb`: when turned off, changes to the deprecation warnings output by a test file won't trigger a warning or update the shitlist.
 
 
@@ -78,7 +78,7 @@ If the diff shows added deprecation warnings, you'll need to go back and change 
 You can check if your test file has changed deprecation warnings by running this command:
 
 ```bash
-DEPRECATION_TRACKER=compare bundle exec rspec spec/foo_spec.rb
+DEPRECATION_TRACKER_MODE=compare bundle exec rspec spec/foo_spec.rb
 ```
 
 In this case, an error will be raised if `spec/foo_spec.rb` triggers deprecation warnings that are different than we expect.
@@ -90,7 +90,7 @@ In this case, an error will be raised if `spec/foo_spec.rb` triggers deprecation
 If the diff shows removed deprecation warnings, congratulations! Pat yourself on the back and then run this command:
 
 ```ruby
-DEPRECATION_TRACKER=save bundle exec rspec <spec files mentioned in the error>
+DEPRECATION_TRACKER_MODE=save bundle exec rspec <spec files mentioned in the error>
 ```
 
 This will rerun the tests that reduces the number of deprecation warnings and save that to the log.
@@ -102,7 +102,7 @@ Be sure to commit your changes, then push and wait for CI to go ✅.
 If the diff shows added and removed lines, the deprecation messages we expected to see may have changed. Most deprecation warnings contain the file and line of app code that caused it. If the line number changes, the deprecation warning message will also change. In this case, you can follow the same steps as you would if you removed deprecation warnings to update the stale deprecation messages:
 
 ```ruby
-DEPRECATION_TRACKER=save bundle exec rspec <spec files mentioned in the error>
+DEPRECATION_TRACKER_MODE=save bundle exec rspec <spec files mentioned in the error>
 ```
 
 This will update the deprecation warning shitlist. Be sure to commit your changes, then push and wait for CI to go ✅.
