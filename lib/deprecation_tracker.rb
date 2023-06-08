@@ -33,7 +33,11 @@ class DeprecationTracker
 
   def self.track_rspec(rspec_config, shitlist_path:, mode:, transform_message: nil)
     deprecation_tracker = DeprecationTracker.new(shitlist_path, transform_message)
-    ActiveSupport::Deprecation.behavior << -> (message, _callstack) { deprecation_tracker.add(message) }
+
+    if defined?(ActiveSupport)
+      ActiveSupport::Deprecation.behavior << -> (message, _callstack, _deprecation_horizon, _gem_name) { deprecation_tracker.add(message) }
+    end
+
     KernelWarnTracker.callbacks << -> (message) { deprecation_tracker.add(message) }
 
     rspec_config.around do |example|
